@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        .always-visible {
+            display: block !important;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large red" onclick="addRow(); addBtn()">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+            <ul id="content-btn">
+            </ul>
+        </div>
+        <div style="margin-top: 25px;">
+            <div class="row container">
+                <ul class="collapsible expandable popout" id="content-field">
+                    <li>
+                        <div style="width:100%; padding-bottom:52px">
+                            <div class="collapsible-header nav-wrapper col s11 valign-wrapper" style="width:94%; border-bottom:0px;">
+                                <i class="material-icons" style="margin: 14px;">filter_drama</i>Currency
+                            </div>
+                            <div class="right" style="width: 6%">
+                                <a class="waves-effect red lighten-2 btn-small" style="margin:15%;"><i class="material-icons">cancel</i></a>
+                            </div>
+                        </div>
+                        <div class="collapsible-body row">
+                            <div class="input-field col s12">
+                                <div class="col s12 m12">
+                                    <label>Choose currency or currencies</label>
+                                    <select multiple>
+                                        <option value="" disabled selected></option>
+                                        <option value="1">USD</option>
+                                        <option value="2">EUR</option>
+                                        <option value="3">TRY</option>
+                                    </select>
+                                </div>
+                                <div class="col s12 m4">
+                                    <label>Choose currency or currencies</label>
+                                    <input type="text" class="datepicker">
+                                </div>
+                                <div class="col s12 m12"></div>
+                                <div class="right">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        </p>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+    <script> 
+
+        var elem = document.querySelector('.collapsible.expandable');
+        var instance = M.Collapsible.init(elem, {
+            accordion: false
+        });
+
+        $(document).ready(function () {
+            $('select').formSelect();
+            $('.fixed-action-btn').floatingActionButton();
+            $('.datepicker').datepicker({ format: 'mm-dd-yy' });
+        });
+
+        function addRow() {
+            var div = document.createElement('li');
+
+            div.innerHTML =
+                '<div class="collapsible-header nav-wrapper col s11 valign-wrapper">\
+                            <i class="material-icons" style="margin: 14px" ;>filter_drama</i>Currency\
+                        </div>\
+                        <div>\
+                            <a class="waves-effect waves-light btn-small" style="margin:10px; margin-left:50px"></a>\
+                        </div>\
+                        <div class="collapsible-body row">\
+                            <div class="input-field col s12">\
+                                <div class="col s12 m12">\
+                                    <label>Choose currency or currencies</label>\
+                                    <select multiple>\
+                                        <option value="" disabled selected></option>\
+                                        <option value="1">USD</option>\
+                                        <option value="2">EUR</option>\
+                                        <option value="3">TRY</option>\
+                                    </select>\
+                                </div>\
+                                <div class="col s12 m4">\
+                                    <label>Choose currency or currencies</label>\
+                                    <input type="text" class="datepicker">\
+                                </div>\
+                                <div class="col s12 m12"></div>\
+                                <div class="right">\
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">Submit\
+                                        <i class="material-icons right">send</i>\
+                                    </button>\
+                                </div>\
+                            </div>\
+                        </div>';
+
+            document.getElementById('content-field').appendChild(div);
+
+            $(div).find('.datepicker').datepicker({
+                format: 'mm-dd-yy'
+            });
+
+            $(document).ready(function () {
+                $('select').formSelect();
+            });
+        }
+
+        function addBtn() {
+            var div = document.createElement('li');
+
+            div.innerHTML =
+                '<a class="btn-floating yellow darken-1" onclick="removeRow(this); mytest()" style="opacity: 1; transform: scale(1) translateY(0px) translateX(0px);">\
+                    <i class="material-icons">\
+                        format_quote\
+                    </i>\
+                </a>';
+
+            document.getElementById('content-btn').appendChild(div);
+            $('.fixed-action-btn').floatingActionButton();
+        }
+
+        function removeRow(input) {
+            document.getElementById('content-btn').removeChild(input.parentNode);
+        }
+
+        function remoreField(input) {
+            document.getElementById('content-field').removeChild(input.parentNode);
+        }
+
+        function mytest() {
+            var list = document.getElementById("content-field");
+            // list.removeChild(list.childNodes[document.getElementById("content-btn").getElementsByClassName("li").length);
+        }
+
+    </script>
+
+</body>
+
+</html>

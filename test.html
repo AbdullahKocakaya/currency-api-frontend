@@ -2,45 +2,88 @@
 <html lang="en">
 
 <head>
-    <title>Learning the DOM</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        .always-visible {
+            display: block !important;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Document Object Model</h1>
 
-    <input type="button" value="+" onclick="addRow()">
+    <input type="button" value="+" onclick="addRow();">
 
-    <ul>
+    <ul class="collapsible" id="content">
         <li>
-                <input type="text" name="name" value="" />
-                <input type="text" name="value" value="" />
-                <label> <input type="checkbox" name="check" value="1" /> Checked? </label>
-                <input type="button" value="-" onclick="removeRow(this)">
+            <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+            <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
         </li>
-        <div id="content">
-        </div>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+            <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+            <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+        </li>
     </ul>
 
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red" onclick="addRow();">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+            <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+            <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+            <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+        </ul>
+    </div>
 
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    
     <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+  });
+
         function addRow() {
-            var div = document.createElement('div');
+            var li = document.createElement('li');
 
-            div.className = 'row';
+            li.innerHTML =
+                '<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>\
+                <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>';
 
-            div.innerHTML =
-                '<li><input type="text" name="name" value="" />\
-        <input type="text" name="value" value="" />\
-        <label> <input type="checkbox" name="check" value="1" /> Checked? </label>\
-        <input type="button" value="-" onclick="removeRow(this)"> </li>';
-
-            document.getElementById('content').appendChild(div);
+            document.getElementById('content').appendChild(li);
         }
 
         function removeRow(input) {
             document.getElementById('content').removeChild(input.parentNode);
         }
+
+        function test() {
+            var div = document.createElement('div');
+
+            div.innerHTML = 'hello';
+
+            document.getElementById('content').appendChild(div);
+        }        
     </script>
+
+
 
 </body>
 
