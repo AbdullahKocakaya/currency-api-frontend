@@ -31,12 +31,9 @@
 
     <main>
         <div class="fixed-action-btn">
-            <a class="btn-floating btn-large red" onclick="addRow(); addBtn()">
+            <a class="btn-floating btn-large red" onclick="addRow();">
                 <i class="large material-icons">mode_edit</i>
             </a>
-            <ul id="content-btn">
-                <li><a class="btn-floating red"><i class="material-icons">note_add</i></a></li>
-            </ul>
         </div>
         <div class="parallax-container">
             <div class="parallax">
@@ -45,10 +42,16 @@
         </div>
         <div style="margin-top: 25px;">
             <div class="row container">
-                <ul class="collapsible expandable popout" id="content-field">
+                <ul class="collapsible expandable popout" id="content">
                     <li>
-                        <div class="collapsible-header">
-                            <i class="material-icons">filter_drama</i>Currency
+                        <div style="width:100%; padding-bottom:52px; margin-bottom:10px;">
+                            <div class="collapsible-header nav-wrapper col s11 valign-wrapper" style="width:94%; border-bottom:0px;">
+                                <i class="material-icons" style="margin: 14px;">filter_drama</i>Currency
+                            </div>
+                            <div class="right" style="width: 6%">
+                                <a class="waves-effect red lighten-2 btn-small" style="margin:13.5%;" onclick="removeRow(this)"><i
+                                        class="material-icons">cancel</i></a>
+                            </div>
                         </div>
                         <div class="collapsible-body row">
                             <div class="input-field col s12">
@@ -125,23 +128,13 @@
 
     <script> 
         $(document).ready(function () {
-            $('.parallax').parallax();
-        });
-
-        $(document).ready(function () {
             $('.fixed-action-btn').floatingActionButton();
-        });
-
-        $(document).ready(function () {
             $('.side-action-btn').floatingActionButton();
-        });
-
-        $(document).ready(function () {
-            $('.sidenav').sidenav();
-        });
-
-        $(document).ready(function () {
-            $('.modal').modal();
+            $('.parallax').parallax();
+            $('select').formSelect();
+            $('.datepicker').datepicker({
+                format: 'mm-dd-yy'
+            });
         });
 
         var elem = document.querySelector('.collapsible.expandable');
@@ -149,48 +142,43 @@
             accordion: false
         });
 
-        $(document).ready(function () {
-            $('select').formSelect();
-        });
-
-        $(document).ready(function () {
-            $('.datepicker').datepicker({
-                format: 'mm-dd-yy'
-            });
-        });
-
         function addRow() {
             var div = document.createElement('li');
 
             div.innerHTML =
-                '<div class="collapsible-header">\
-                            <i class="material-icons">filter_drama</i>Currency\
+                '<div style="width:100%; padding-bottom:52px; margin-bottom:10px;">\
+                    <div class="collapsible-header nav-wrapper col s11 valign-wrapper" style="width:94%; border-bottom:0px;">\
+                                <i class="material-icons" style="margin: 14px;">filter_drama</i>Currency\
+                            </div>\
+                            <div class="right" style="width: 6%">\
+                                <a class="waves-effect red lighten-2 btn-small" style="margin:13.5%;" onclick="removeRow(this)"><i class="material-icons">cancel</i></a>\
+                            </div>\
                         </div>\
-                <div class="collapsible-body row">\
-                    <div class="input-field col s12">\
-                        <div class="col s12 m12">\
-                            <label>Choose currency or currencies</label>\
-                            <select multiple>\
-                                <option value="" disabled selected></option>\
-                                <option value="1">USD</option>\
-                                <option value="2">EUR</option>\
-                                <option value="3">TRY</option>\
-                            </select>\
-                        </div>\
-                        <div class="col s12 m4">\
-                            <label>Choose currency or currencies</label>\
-                            <input type="text" class="datepicker">\
-                        </div>\
-                        <div class="col s12 m12"></div>\
-                        <div class="right">\
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit\
-                                <i class="material-icons right">send</i>\
-                            </button>\
-                        </div>\
-                    </div>\
-                </div>';
+                        <div class="collapsible-body row">\
+                            <div class="input-field col s12">\
+                                <div class="col s12 m12">\
+                                    <label>Choose currency or currencies</label>\
+                                    <select multiple>\
+                                        <option value="" disabled selected></option>\
+                                        <option value="1">USD</option>\
+                                        <option value="2">EUR</option>\
+                                        <option value="3">TRY</option>\
+                                    </select>\
+                                </div>\
+                                <div class="col s12 m4">\
+                                    <label>Choose currency or currencies</label>\
+                                    <input type="text" class="datepicker">\
+                                </div>\
+                                <div class="col s12 m12"></div>\
+                                <div class="right">\
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">Submit\
+                                        <i class="material-icons right">send</i>\
+                                    </button>\
+                                </div>\
+                            </div>\
+                        </div>';
 
-            document.getElementById('content-field').appendChild(div);
+            document.getElementById('content').appendChild(div);
 
             $(div).find('.datepicker').datepicker({
                 format: 'mm-dd-yy'
@@ -201,21 +189,8 @@
             });
         }
 
-        function addBtn() {
-            var div = document.createElement('li');
-
-            div.innerHTML =
-                '<a class="btn-floating yellow darken-1">\
-                    <i class="material-icons">\
-                        format_quote\
-                    </i>\
-                </a>';
-
-            document.getElementById('content-btn').appendChild(div);
-        }
-
         function removeRow(input) {
-            document.getElementById('content').removeChild(input.parentNode);
+            document.getElementById('content').removeChild(input.parentNode.parentNode.parentNode);
         }
 
     </script>

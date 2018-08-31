@@ -20,6 +20,7 @@
     <h1>Document Object Model</h1>
 
     <input type="button" value="+" onclick="addRow();">
+    <input type="button" value="+" onclick="removeRow(this);">
 
     <ul class="collapsible" id="content">
         <li>
@@ -37,7 +38,7 @@
     </ul>
 
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red" onclick="addRow();">
+        <a class="btn-floating btn-large red" onclick="addRow();"> 
             <i class="large material-icons">mode_edit</i>
         </a>
         <ul>

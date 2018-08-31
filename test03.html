@@ -20,22 +20,21 @@
     <main>
 
         <div class="fixed-action-btn">
-            <a class="btn-floating btn-large red" onclick="addRow(); addBtn()">
+            <a class="btn-floating btn-large red" onclick="addRow()">
                 <i class="large material-icons">mode_edit</i>
             </a>
-            <ul id="content-btn">
-            </ul>
         </div>
         <div style="margin-top: 25px;">
             <div class="row container">
-                <ul class="collapsible expandable popout" id="content-field">
+                <ul class="collapsible expandable popout" id="content">
                     <li>
-                        <div style="width:100%; padding-bottom:52px">
+                        <div style="width:100%; padding-bottom:52px; margin-bottom:10px;">
                             <div class="collapsible-header nav-wrapper col s11 valign-wrapper" style="width:94%; border-bottom:0px;">
                                 <i class="material-icons" style="margin: 14px;">filter_drama</i>Currency
                             </div>
                             <div class="right" style="width: 6%">
-                                <a class="waves-effect red lighten-2 btn-small" style="margin:15%;"><i class="material-icons">cancel</i></a>
+                                <a class="waves-effect red lighten-2 btn-small" style="margin:13.5%;" onclick="removeRow(this)"><i
+                                        class="material-icons">cancel</i></a>
                             </div>
                         </div>
                         <div class="collapsible-body row">
@@ -61,7 +60,6 @@
                                 </div>
                             </div>
                         </div>
-                        </p>
                     </li>
                 </ul>
 
@@ -90,12 +88,15 @@
         function addRow() {
             var div = document.createElement('li');
 
+
             div.innerHTML =
-                '<div class="collapsible-header nav-wrapper col s11 valign-wrapper">\
-                            <i class="material-icons" style="margin: 14px" ;>filter_drama</i>Currency\
-                        </div>\
-                        <div>\
-                            <a class="waves-effect waves-light btn-small" style="margin:10px; margin-left:50px"></a>\
+                '<div style="width:100%; padding-bottom:52px; margin-bottom:10px;">\
+                    <div class="collapsible-header nav-wrapper col s11 valign-wrapper" style="width:94%; border-bottom:0px;">\
+                                <i class="material-icons" style="margin: 14px;">filter_drama</i>Currency\
+                            </div>\
+                            <div class="right" style="width: 6%">\
+                                <a class="waves-effect red lighten-2 btn-small" style="margin:13.5%;" onclick="removeRow(this)"><i class="material-icons">cancel</i></a>\
+                            </div>\
                         </div>\
                         <div class="collapsible-body row">\
                             <div class="input-field col s12">\
@@ -121,7 +122,7 @@
                             </div>\
                         </div>';
 
-            document.getElementById('content-field').appendChild(div);
+            document.getElementById('content').appendChild(div);
 
             $(div).find('.datepicker').datepicker({
                 format: 'mm-dd-yy'
@@ -132,31 +133,8 @@
             });
         }
 
-        function addBtn() {
-            var div = document.createElement('li');
-
-            div.innerHTML =
-                '<a class="btn-floating yellow darken-1" onclick="removeRow(this); mytest()" style="opacity: 1; transform: scale(1) translateY(0px) translateX(0px);">\
-                    <i class="material-icons">\
-                        format_quote\
-                    </i>\
-                </a>';
-
-            document.getElementById('content-btn').appendChild(div);
-            $('.fixed-action-btn').floatingActionButton();
-        }
-
         function removeRow(input) {
-            document.getElementById('content-btn').removeChild(input.parentNode);
-        }
-
-        function remoreField(input) {
-            document.getElementById('content-field').removeChild(input.parentNode);
-        }
-
-        function mytest() {
-            var list = document.getElementById("content-field");
-            // list.removeChild(list.childNodes[document.getElementById("content-btn").getElementsByClassName("li").length);
+            document.getElementById('content').removeChild(input.parentNode.parentNode.parentNode);
         }
 
     </script>

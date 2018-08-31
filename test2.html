@@ -17,47 +17,11 @@
 </head>
 
 <body>
-    <main>
-        <div class="fixed-action-btn">
-            <a class="btn-floating btn-large red" onclick="addRow(); addBtn()">
-                <i class="large material-icons">mode_edit</i>
-            </a>
-            <ul id="content-btn">
-            </ul>
-        </div>
-        <div style="margin-top: 25px;">
-            <div class="row container">
-                <ul class="collapsible expandable popout" id="content-field">
-                    <li>
-                        <div class="collapsible-header">
-                            <i class="material-icons">filter_drama</i>Currency
-                        </div>
-                        <div class="collapsible-body row">
-                            <div class="input-field col s12">
-                                <div class="col s12 m12">
-                                    <label>Choose currency or currencies</label>
-                                    <select multiple>
-                                        <option value="" disabled selected></option>
-                                        <option value="1">USD</option>
-                                        <option value="2">EUR</option>
-                                        <option value="3">TRY</option>
-                                    </select>
-                                </div>
-                                <div class="col s12 m4">
-                                    <label>Choose currency or currencies</label>
-                                    <input type="text" class="datepicker">
-                                </div>
-                                <div class="col s12 m12"></div>
-                                <div class="right">
-                                    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                                        <i class="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+    <main class="container">
+        <input type="button" value="+" onclick="addRow()">
+
+        <div id="content">
+        
         </div>
     </main>
 
@@ -81,74 +45,23 @@
             });
         });
 
-        function addRow() {
-            var div = document.createElement('li');
+function addRow() {
+    var div = document.createElement('div');
 
-            div.innerHTML =
-                '<div class="collapsible-header">\
-                            <i class="material-icons">filter_drama</i>Currency\
-                        </div>\
-                <div class="collapsible-body row">\
-                    <div class="input-field col s12">\
-                        <div class="col s12 m12">\
-                            <label>Choose currency or currencies</label>\
-                            <select multiple>\
-                                <option value="" disabled selected></option>\
-                                <option value="1">USD</option>\
-                                <option value="2">EUR</option>\
-                                <option value="3">TRY</option>\
-                            </select>\
-                        </div>\
-                        <div class="col s12 m4">\
-                            <label>Choose currency or currencies</label>\
-                            <input type="text" class="datepicker">\
-                        </div>\
-                        <div class="col s12 m12"></div>\
-                        <div class="right">\
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Submit\
-                                <i class="material-icons right">send</i>\
-                            </button>\
-                        </div>\
-                    </div>\
-                </div>';
+    div.className = 'row';
 
-            document.getElementById('content-field').appendChild(div);
+    div.innerHTML =
+        '<input type="text" name="name" value="" />\
+        <input type="text" name="value" value="" />\
+        <label> <input type="checkbox" name="check" value="1" /> Checked? </label>\
+        <input type="button" value="-" onclick="removeRow(this)">';
 
-            $(div).find('.datepicker').datepicker({
-                format: 'mm-dd-yy'
-            });
+    document.getElementById('content').appendChild(div);
+}
 
-            $(document).ready(function () {
-                $('select').formSelect();
-            });
-        }
-
-        function addBtn() {
-            var div = document.createElement('li');
-
-            div.innerHTML =
-                '<a class="btn-floating yellow darken-1" onclick="removeRow(this); mytest()" style="opacity: 1; transform: scale(1) translateY(0px) translateX(0px);">\
-                    <i class="material-icons">\
-                        format_quote\
-                    </i>\
-                </a>';
-
-            document.getElementById('content-btn').appendChild(div);
-            $('.fixed-action-btn').floatingActionButton();
-        }
-
-        function removeRow(input) {
-            document.getElementById('content-btn').removeChild(input.parentNode);
-        }
-
-        function remoreField(input) {
-            document.getElementById('content-field').removeChild(input.parentNode);
-        }
-
-        function mytest() {
-            var list = document.getElementById("content-field");
-           // list.removeChild(list.childNodes[document.getElementById("content-btn").getElementsByClassName("li").length);
-        }
+function removeRow(input) {
+    document.getElementById('content').removeChild(input.parentNode);
+}
 
     </script>
 
