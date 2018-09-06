@@ -17,12 +17,45 @@
 </head>
 
 <body>
-    <main class="container">
-        <input type="button" value="+" onclick="addRow()">
+    <main>
 
-        <div id="content">
-        
+        <div style="margin-top: 25px;">
+            <div class="row container">
+                <ul class="collapsible expandable popout" id="content">
+                    <li>
+                        <div style="width:100%; padding-bottom:52px; margin-bottom:10px;">
+                            <div class="collapsible-header nav-wrapper col s11 valign-wrapper" style="width:94%; border-bottom:0px;">
+                                <i class="material-icons" style="margin: 14px;">filter_drama</i><div id="testDiv"> </div>Currency
+                            </div>
+                        </div>
+                        <div class="collapsible-body row">
+                            <div class="input-field col s12" id="MyDiv">
+                                <div class="col s12 m12">
+                                    <label>Choose currency or currencies</label>
+                                    <select multiple id="inputCurrency">
+                                        <option value="" disabled selected></option>
+                                        <option value="USD">USD</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="TRY">TRY</option>
+                                    </select>
+                                </div>
+                                <div class="col s12 m4">
+                                    <label>Choose currency or currencies</label>
+                                    <input type="text" class="datepicker" id="inputDate">
+                                </div>
+                                <div class="col s12 m12"></div>
+                                <div class="right">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action" onclick="clearBox();">Submit
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
+        <div id="ProfileList"></div>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -40,28 +73,81 @@
         $(document).ready(function () {
             $('select').formSelect();
             $('.fixed-action-btn').floatingActionButton();
-            $('.datepicker').datepicker({
-                format: 'mm-dd-yy'
+            $('.datepicker').datepicker({ format: 'yyyy-dd-mm' });
+        });
+
+        function clearBox() {
+            document.getElementById("MyDiv").innerHTML =
+                '<div class="row">\
+                    <div class="col s12 m3">\
+                        <div class="card">\
+                            <div class="card-image">\
+                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">close</i></a>\
+                            </div>\
+                            <div class="card-content">\
+                                <p id="currency">I am a very simple card. I am good at containing small bits of information. I am convenient because I \
+                                require little markup to use effectively.</p>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="col s12 m3">\
+                        <div class="card">\
+                            <div class="card-image">\
+                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">close</i></a>\
+                            </div>\
+                            <div class="card-content">\
+                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I \
+                                require little markup to use effectively.</p>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>';
+        }
+
+        function sendRequesta() {
+            var date = document.getElementById("inputDate").value;
+
+
+
+            var currencies = $('#inputCurrency').val();
+            document.getElementById("testDiv").innerHTML = currencies;
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open('GET', 'http://localhost:8080/currency/getCurrencies/' + date, true);
+            console.log(httpRequest);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE) {
+                    if (httpRequest.status == 200) {
+                        var xmlDoc = httpRequest.responseXML;
+                        alert(xmlDoc);
+                        return;
+                        insertValuesFromApi(jsonResponse);
+                    }
+                }
+            }
+            httpRequest.send(null);
+        }
+
+        $(function() {
+            var xml = "<?xml version='1.0' ?><Currency><currencyCode>USD</currencyCode><currencyName>US DOLLAR</currencyName><forexBuying>6.6213</forexBuying><forexSelling>6.6333</forexSelling><banknoteBuying>6.6167</banknoteBuying><banknoteSelling>6.6432</banknoteSelling></Currency>";
+
+            var xmlDoc = $.parseXML(xml);
+
+            var $xml = $(xmlDoc);
+
+            var $person = $xml.find("currencyCode");
+
+            $person.each(function() {
+
+                var currencyCode = $(this).find('currencyCode').text()
+
+                    $("#ProfileList").append('<div>' + currencyCode + ' - ' + '</div>');
             });
         });
 
-function addRow() {
-    var div = document.createElement('div');
 
-    div.className = 'row';
-
-    div.innerHTML =
-        '<input type="text" name="name" value="" />\
-        <input type="text" name="value" value="" />\
-        <label> <input type="checkbox" name="check" value="1" /> Checked? </label>\
-        <input type="button" value="-" onclick="removeRow(this)">';
-
-    document.getElementById('content').appendChild(div);
-}
-
-function removeRow(input) {
-    document.getElementById('content').removeChild(input.parentNode);
-}
+        function insertValuesFromApi(values) {
+            document.getElementById("currency").innerHTML = values.Currency.currencyCode
+        }
 
     </script>
 
