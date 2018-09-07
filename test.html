@@ -32,8 +32,12 @@
                     </a>
                 </div>
                 <div class="card-content">
-                    <p>Forex Buying : {{forexBuying}}<br>Forex Selling : {{forexSelling}}<br>Banknote Buying : {{banknoteBuying}}<br>Banknote
-                        Buying : {{banknoteSelling}}</p>
+                    <p> 
+                        Forex Buying : {{forexBuying}}<br>
+                        Forex Selling : {{forexSelling}}<br>
+                        Banknote Buying : {{banknoteBuying}}<br>
+                        Banknote Buying : {{banknoteSelling}}
+                    </p>
                 </div>
             </div>
         </div>
@@ -59,7 +63,6 @@
                     var newCardListHTML = "";
 
                     for (var i in res) {
-
                         newCardListHTML += divCardListTemplate
                             .replace(/{{currencyName}}/, res[i].currencyName)
                             .replace(/{{forexBuying}}/, res[i].forexBuying)
@@ -69,7 +72,6 @@
                     }
 
                     $("#currencyList").html(newCardListHTML);
-
                 }
             });
         });
