@@ -27,7 +27,7 @@
                     console.log(xhttp);
                     doc = xhttp;
                     
-                    document.getElementById("ProfileList").innerHTML = xhttp.responseXML;
+                    document.getElementById("ProfileList").innerHTML = xhttp.responseText;
 
                     var xmlDoc = $.parseXML(doc);
 
