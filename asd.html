@@ -1,0 +1,46 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    <ul id="ProfileList"></ul>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+    <script>
+
+        $(function () {
+
+            //Sample XML    
+            var xml = "<?xml version='1.0' ?><doc><person><name>sachin</name><age>21</age></person><person><name>Akash</name><age>18</age></person></doc>";
+
+
+            //Parse the givn XML
+            var xmlDoc = $.parseXML(xml);
+
+            var $xml = $(xmlDoc);
+
+            // Find Person Tag
+            var $person = $xml.find("person");
+
+            $person.each(function () {
+
+                var name = $(this).find('name').text(),
+                    age = $(this).find('age').text();
+
+                $("#ProfileList").append('<li>' + name + ' - ' + age + '</li>');
+
+            });
+
+
+        });
+    </script>
+</body>
+
+</html>

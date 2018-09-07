@@ -1,0 +1,54 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    <div id="ProfileList">
+            <h1>The XMLHttpRequest Object</h1>
+            <button type="button" onclick="loadDoc()">Change Content</button>
+            </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+    <script>
+
+        function loadDoc () {
+            
+            var doc;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 & this.status == 200) {
+                    console.log(xhttp);
+                    doc = xhttp;
+                    
+                    document.getElementById("ProfileList").innerHTML = xhttp.responseXML;
+
+                    var xmlDoc = $.parseXML(doc);
+
+                    var $xml = $(xmlDoc);
+
+                    var $person = $xml.find("currency");
+
+                    $person.each(function () {
+
+                        var currencyCode = $(this).find('currencyCode').text();
+
+                        $("#ProfileList").append('<div>' + currencyCode + '</div>');
+                    })
+                }
+            };
+            xhttp.open("GET","http://localhost:8080/currency/getCurrencies/today", true);
+            xhttp.send();
+
+
+        };
+    </script>
+</body>
+
+</html>
