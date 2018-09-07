@@ -18,26 +18,26 @@
 
 <body class="container">
 
+    <div class="row" id="currencyList"></div>
 
-    <div id="templateCur" class="hide">
-        <div class="card">
-            <div class="card-image">
-                <img src="images/sample-1.jpg">
-                <span class="card-title">{{card_title}}</span>
-            </div>
-            <div class="card-content">
 
-                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I
-                    require little markup to use effectively.</p>
-            </div>
-            <div class="card-action">
-                <a href="#">This is a link</a>
+    <div id="cardListTemplate" style="display:none;">
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img style="height:80px;" src="resource/img/background02.jpg">
+                    <span class="card-title">{{currencyName}}</span>
+                    <a class="btn-floating halfway-fab waves-effect waves-light red">
+                        <i class="material-icons">close</i>
+                    </a>
+                </div>
+                <div class="card-content">
+                    <p>Forex Buying : {{forexBuying}}<br>Forex Selling : {{forexSelling}}<br>Banknote Buying : {{banknoteBuying}}<br>Banknote
+                        Buying : {{banknoteSelling}}</p>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="row" id="ProfileList"></div>
-
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -46,43 +46,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
     <script>
-        /*   $(function () {
-               //Sample XML    
-   
-   
-               var xmlDoc = $.parseXML(xml);
-   
-               var $xml = $(xmlDoc);
-   
-               // Find Person Tag
-               var $currency = $xml.find("currency");
-   
-               $currency.each(function () {
-   
-                   var currencyCode = $(this).find('currencyCode').text();
-                   var currencyName = $(this).find('currencyName').text();
-                   var forexBuying = $(this).find('forexBuying').text();
-                   var forexSelling = $(this).find('forexSelling').text();
-                   var banknoteBuying = $(this).find('banknoteBuying').text();
-                   var banknoteSelling = $(this).find('banknoteSelling').text();
-   
-                   $("#ProfileList").append(
-                       '<div class="col s12 m3">\
-                           <div class="card">\
-                               <div class="card-image">\
-                                   <img style="height:80px;" src="resource/img/background02.jpg">\
-                                   <span class="card-title">' + currencyName + '</span>\
-                                   <a class="btn-floating halfway-fab waves-effect waves-light red">\
-                                       <i class="material-icons">close</i>\
-                                   </a>\
-                               </div>\
-                               <div class="card-content">\
-                                   <p>Forex Buying ' + forexBuying + '<br> Forex Selling ' + forexSelling + '<br>Banknote Buying ' + banknoteBuying + '<br>Banknote Selling ' + banknoteSelling + '</p>\
-                               </div>\
-                           </div>\
-                       </div>');
-               });
-           });*/
 
         $(document).ready(function () {
 
@@ -92,118 +55,23 @@
                 url: xmlUrl,
                 success: function (res) {
 
-                    var resultsHTML = "";
+                    var divCardListTemplate = $("#cardListTemplate").html();
+                    var newCardListHTML = "";
 
                     for (var i in res) {
-                        resultsHTML += "<hr/>" + res[i].currencyCode + " = " + res[i].banknoteBuying + " ~ " + res[i].banknoteSelling
+
+                        newCardListHTML += divCardListTemplate
+                            .replace(/{{currencyName}}/, res[i].currencyName)
+                            .replace(/{{forexBuying}}/, res[i].forexBuying)
+                            .replace(/{{forexSelling}}/, res[i].forexSelling)
+                            .replace(/{{banknoteBuying}}/, res[i].banknoteBuying)
+                            .replace(/{{banknoteSelling}}/, res[i].banknoteSelling);
                     }
 
-                    $("#ProfileList").html(resultsHTML);
-
-
-
-                    /*
-                                        var xmlDoc = $.parseXML(res);
-                    
-                                        var $doc = $(xmlDoc);
-                    
-                                        var $currency = $doc.find("currency");
-                    
-                                        $currency.each(function () {
-                    
-                                            var currencyCode = $(this).find('currencyCode').text();
-                                            var currencyName = $(this).find('currencyName').text();
-                                            var forexBuying = $(this).find('forexBuying').text();
-                                            var forexSelling = $(this).find('forexSelling').text();
-                                            var banknoteBuying = $(this).find('banknoteBuying').text();
-                                            var banknoteSelling = $(this).find('banknoteSelling').text();
-                    
-                                            $("#ProfileList").append(
-                                                '<div class="col s12 m3">\
-                                            <div class="card">\
-                                                <div class="card-image">\
-                                                    <img style="height:80px;" src="resource/img/background02.jpg">\
-                                                    <span class="card-title">' + currencyName + '</span>\
-                                                    <a class="btn-floating halfway-fab waves-effect waves-light red">\
-                                                        <i class="material-icons">close</i>\
-                                                    </a>\
-                                                </div>\
-                                                <div class="card-content">\
-                                                    <p>Forex Buying ' + forexBuying + '<br> Forex Selling ' + forexSelling + '<br>Banknote Buying ' + banknoteBuying + '<br>Banknote Selling ' + banknoteSelling + '</p>\
-                                                </div>\
-                                            </div>\
-                                        </div>');
-                                        })
-                    */
+                    $("#currencyList").html(newCardListHTML);
 
                 }
             });
-
-
-
-            //Parse the givn XML
-            var doc;
-            var x = new XMLHttpRequest();
-            x.open("GET", "http://localhost:8080/currency/getCurrencies/today", true);
-            x.onreadystatechange = function () {
-                if (x.readyState == 4 && x.status == 200) {
-                    doc = x.responseXML;
-                }
-            };
-
-            var xmlDoc = $.parseXML(doc);
-
-            var $doc = $(xmlDoc);
-
-            // Find Person Tag
-            var $currency = $doc.find("currency");
-
-
-        });
-
-        $(function () {
-            var xml = "<asd>\
-            <currency>\
-                <currencyCode>USD</currencyCode>\
-                <currencyName>US DOLLAR</currencyName>\
-                <forexBuying>6.6213</forexBuying>\
-                <forexSelling>6.6333</forexSelling>\
-                <banknoteBuying>6.6167</banknoteBuying>\
-                <banknoteSelling>6.6432</banknoteSelling>\
-            </currency>\
-            <currency>\
-                <currencyCode>EUR</currencyCode>\
-                <currencyName>EURO</currencyName>\
-                <forexBuying>6.1252</forexBuying>\
-                <forexSelling>6.1362</forexSelling>\
-                <banknoteBuying>6.1209</banknoteBuying>\
-                <banknoteSelling>6.1454</banknoteSelling>\
-            </currency>\
-            <currency>\
-                <currencyCode>EUR</currencyCode>\
-                <currencyName>EURO</currencyName>\
-                <forexBuying>6.1252</forexBuying>\
-                <forexSelling>6.1362</forexSelling>\
-                <banknoteBuying>6.1209</banknoteBuying>\
-                <banknoteSelling>6.1454</banknoteSelling>\
-            </currency>\
-            <currency>\
-                <currencyCode>EUR</currencyCode>\
-                <currencyName>EURO</currencyName>\
-                <forexBuying>6.1252</forexBuying>\
-                <forexSelling>6.1362</forexSelling>\
-                <banknoteBuying>6.1209</banknoteBuying>\
-                <banknoteSelling>6.1454</banknoteSelling>\
-            </currency>\
-            <currency>\
-                <currencyCode>EUR</currencyCode>\
-                <currencyName>EURO</currencyName>\
-                <forexBuying>6.1252</forexBuying>\
-                <forexSelling>6.1362</forexSelling>\
-                <banknoteBuying>6.1209</banknoteBuying>\
-                <banknoteSelling>6.1454</banknoteSelling>\
-            </currency>\
-            </asd>";
         });
     </script>
 
