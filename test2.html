@@ -25,19 +25,13 @@
                     <li>
                         <div style="width:100%; padding-bottom:52px; margin-bottom:10px;">
                             <div class="collapsible-header nav-wrapper col s11 valign-wrapper" style="width:94%; border-bottom:0px;">
-                                <i class="material-icons" style="margin: 14px;">filter_drama</i><div id="testDiv"> </div>Currency
+                                <i class="material-icons" style="margin: 14px;">filter_drama</i>Currency
                             </div>
                         </div>
                         <div class="collapsible-body row" id="currencyList">
-                            <div class="input-field col s12" id="MyDiv">
-                                <div class="col s12 m12">
+                            <div class="input-field col s12">
+                                <div class="col s12 m12" id="dropdown">
                                     <label>Choose currency or currencies</label>
-                                    <select multiple id="inputCurrency">
-                                        <option value="" disabled selected></option>
-                                        <option value="USD">USD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="TRY">TRY</option>
-                                    </select>
                                 </div>
                                 <div class="col s12 m4">
                                     <label>Choose currency or currencies</label>
@@ -45,7 +39,7 @@
                                 </div>
                                 <div class="col s12 m12"></div>
                                 <div class="right">
-                                    <button class="btn waves-effect waves-light" type="submit" name="action" onclick="clearBox();">Submit
+                                    <button class="btn waves-effect waves-light" type="submit" name="action" onclick="createSelectedCards();">Submit
                                         <i class="material-icons right">send</i>
                                     </button>
                                 </div>
@@ -58,7 +52,7 @@
         <div id="ProfileList"></div>
 
         <div id="cardListTemplate" style="display:none;">
-            <div class="col s12 m3" id="this">
+            <div class="col s12 m3">
                 <div class="card">
                     <div class="card-image">
                         <img style="height:80px;" src="resource/img/background02.jpg">
@@ -69,14 +63,21 @@
                     </div>
                     <div class="card-content">
                         <p>
-                            Forex Buying : {{forexBuying}}<br> 
-                            Forex Selling : {{forexSelling}}<br> 
-                            Banknote Buying : {{banknoteBuying}}<br>                            
-                            Banknote Buying : {{banknoteSelling}}
+                            Forex Buying : {{forexBuying}}<br> Forex Selling : {{forexSelling}}<br> Banknote Buying : {{banknoteBuying}}<br>Banknote
+                            Buying : {{banknoteSelling}}
                         </p>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="currencyDropdownTemplate" style="display:none;"> 
+            <select multiple id="inputCurrency">
+            </select>
+        </div>
+
+        <div id="currencyCodeOptionTemplate" style="display:none;">
+            <option value={{currencyCode}}>{{currencyName}}</option>
         </div>
 
     </main>
@@ -87,36 +88,66 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
     <script> 
-
         var elem = document.querySelector('.collapsible.expandable');
         var instance = M.Collapsible.init(elem, {
             accordion: false
         });
 
+        //gets currecy name for dropdown list
         $(document).ready(function () {
+            var xmlUrl = "http://localhost:8080/currency/getCurrencies/today";
+
+            $.ajax({
+                url: xmlUrl,
+                success: function (res) {
+                    var divCardListTemplate = $("#currencyCodeOptionTemplate").html();
+                    var newCardListHTML = "";
+
+                    for (var i in res) {
+                        newCardListHTML += divCardListTemplate
+                            .replace(/{{currencyCode}}/, res[i].currencyCode)
+                            .replace(/{{currencyName}}/, res[i].currencyName);
+                    }
+
+                    $("#inputCurrency").html(newCardListHTML);
+                    $('select').formSelect();
+
+                    var asd = $("#currencyDropdownTemplate").html();
+                    var sdf = "";
+
+                    sdf = asd;
+
+                    $("#dropdown").html(sdf);
+                    
+                }
+            });
+
             $('select').formSelect();
             $('.fixed-action-btn').floatingActionButton();
             $('.datepicker').datepicker({ format: 'yyyy-dd-mm' });
         });
 
-        function clearBox() {
+        function createSelectedCards() {
             var date = document.getElementById("inputDate").value;
             var xmlUrl = "http://localhost:8080/currency/getCurrencies/" + date;
+
+            var currencies = $('#inputCurrency').val();
 
             $.ajax({
                 url: xmlUrl,
                 success: function (res) {
-
                     var divCardListTemplate = $("#cardListTemplate").html();
                     var newCardListHTML = "";
 
                     for (var i in res) {
-                        newCardListHTML += divCardListTemplate
-                            .replace(/{{currencyName}}/, res[i].currencyName)
-                            .replace(/{{forexBuying}}/, res[i].forexBuying)
-                            .replace(/{{forexSelling}}/, res[i].forexSelling)
-                            .replace(/{{banknoteBuying}}/, res[i].banknoteBuying)
-                            .replace(/{{banknoteSelling}}/, res[i].banknoteSelling);
+                        if ($.inArray(res[i].currencyCode, currencies) > -1) {
+                            newCardListHTML += divCardListTemplate
+                                .replace(/{{currencyName}}/, res[i].currencyName)
+                                .replace(/{{forexBuying}}/, res[i].forexBuying)
+                                .replace(/{{forexSelling}}/, res[i].forexSelling)
+                                .replace(/{{banknoteBuying}}/, res[i].banknoteBuying)
+                                .replace(/{{banknoteSelling}}/, res[i].banknoteSelling);
+                        }
                     }
 
                     $("#currencyList").html(newCardListHTML);
@@ -126,7 +157,7 @@
 
         function removeCurrencyCard(input) {
             document.getElementById('currencyList').removeChild(input.parentNode.parentNode.parentNode);
-        } 
+        }
 
         function sendRequesta() {
             var date = document.getElementById("inputDate").value;
