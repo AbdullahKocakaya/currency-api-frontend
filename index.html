@@ -53,6 +53,38 @@
             </div>
         </div>
 
+        <div id="liTemplate" style="display:none;">
+            <li>
+                <div style="width:100%;  margin-bottom:10px;" data-collaps="'{{data-collapsId}}'">
+                    <div class="collapsible-header nav-wrapper  valign-wrapper">
+                               <div class="col m10 "><i class="material-icons" style="float: left;">filter_drama</i> <span style="line-height: 2;">Currency</span></div>
+                                <div class="col m2 ">
+                        <a class="right waves-effect red lighten-2 btn-small" style="text-align:center;" onclick="removeRow('+ id + ')"><i class="material-icons" style="margin-right:0;">cancel</i></a>
+                    </div>
+                    </div>
+                </div>
+                <div class="collapsible-body row" data-id="'{{data-idId}}'">
+                    <div class="input-field col s12">
+                        <div class="col s12 m12">
+                            <label>Choose currency or currencies</label>
+                            <select multiple name="inputCurrency">
+                            </select>
+                        </div>
+                        <div class="col s12 m4">
+                            <label>Choose currency or currencies</label>
+                            <input type="text" class="datepicker" name="inputDate">
+                        </div>
+                        <div class="col s12 m12"></div>
+                        <div class="right">
+                            <button class="btn waves-effect waves-light" type="submit" name="action" onclick="createSelectedCards('{{createSelectedCardsId}}');">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </div>
+
         <div id="cardListTemplate" style="display:none;">
             <div class="col s12 m3" data-id="{{id}}">
                 <div class="card">
@@ -146,10 +178,10 @@
         }
 
         function addRow() {
-            var div = document.createElement('li');
+            var li = document.createElement('li');
             var id = parseInt((String(Math.random()).split("0.")[1]));
 
-            div.innerHTML =
+            li.innerHTML =
                 '<div style="width:100%;  margin-bottom:10px;" data-collaps="' + id + '">\
                     <div class="collapsible-header nav-wrapper  valign-wrapper">\
                                <div class="col m10 "><i class="material-icons" style="float: left;">filter_drama</i> <span style="line-height: 2;">Currency</span></div>\
@@ -178,8 +210,19 @@
                     </div>\
                 </div>';
 
-            document.getElementById('content').appendChild(div);
+            document.getElementById('content').appendChild(li);
 
+       /*     var liTemplate = $("#liTemplate").html();
+            var newLi = "";
+
+            newLi = liTemplate
+            .replace(/{{data-collapsId}}/, id)
+            .replace(/{{data-idId}}/, id)
+            .replace(/{{createSelectedCardsId}}/, id);
+
+            $("[id ='"+id+"'] select").html(newLi);*/
+
+            
             $("[data-id='" + id + "'] input.datepicker").datepicker({ format: 'yyyy-dd-mm', max: 0 });
 
             if (curruncyList && curruncyList.length > 0) {
@@ -233,7 +276,6 @@
 
         function removeCurrencyCard(id) {
             $("[data-id='" + id + "']")[0].remove();
-            // document.getElementById('currencyList').removeChild(input.parentNode.parentNode.parentNode);
         }
 
         function removeRow(id) {
